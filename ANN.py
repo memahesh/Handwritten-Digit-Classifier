@@ -22,13 +22,20 @@ In our current case, mnist has output of handwritten digits ranging from 0-9
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
+# Loading the MNIST Dataset
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
+# Number of Hidden Layer Neurons in Layer 1
 N_HL_1 = 500
+# Number of Hidden Layer Neurons in Layer 2
 N_HL_2 = 500
+# Number of Hidden Layer Neurons in Layer 3
 N_HL_3 = 500
+# Number of Input Features
 N_INPUT = 784
+# Number of Output Classes
 N_CLASSES = 10
+# Batch Size For AdamOptimizer
 BATCH_SIZE = 100
 
 # .placeholder with size doesnt allow any other value of different dimension to enter
@@ -36,6 +43,7 @@ x = tf.placeholder('float', [None,784])
 y = tf.placeholder('float')
 
 def feed_forward(data):
+    # Initializing random values for weights     
     HL_1 = {
         'weights':tf.Variable(tf.random_normal([N_INPUT,N_HL_1])),
         'biases' :tf.Variable(tf.random_normal([N_HL_1]))
@@ -70,7 +78,7 @@ def train_nn(x):
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
     optimizer = tf.train.AdamOptimizer().minimize(cost)
     epochs = 10
-
+    # Running the session    
     with tf.Session() as sess:
         sess.run(tf.initialize_all_variables())
         for epoch in range(epochs):
